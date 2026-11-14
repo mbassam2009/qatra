@@ -117,4 +117,4 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 - GRACE/GRACE-FO JPL mascon CRI RL06.3 (PO.DAAC), served by NASA GIBS layer GRACE_Tellus_Liquid_Water_Equivalent_Thickness_Mascon_CRI: https://podaac.jpl.nasa.gov/dataset/TELLUS_GRAC-GRFO_MASCON_CRI_GRID_RL06.3_V4
 - Copernicus Sentinel-2 L2A (ESA), via Microsoft Planetary Computer, for the map, monthly images and pivot detection
 - Saudi green fodder cultivation ban, Nov 2018: https://www.argaam.com/en/article/articledetail/id/568056
-- AI: Claude (Anthropic) was used for research, coding and design help (see the project page).
+- AI: Claude (Anthropic) was used to help with programming and to check our statistics.
