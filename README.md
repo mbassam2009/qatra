@@ -6,6 +6,8 @@ Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rot
 
 **Live demo:** https://mbassam2009.github.io/qatra/ (or open `index.html` in any browser, no install needed). Click a field on the map.
 
+![Qatra web demo: Sentinel-2 map of 14 pivots and one field month by month](images/demo_field.jpg)
+
 ## Results for two real pivots in Qassim (about 36 km NW of Unaizah)
 
 | Rotation | Pumped water (m³/ha/yr, 10-season average) | Heat-stress days/yr | Soil score (0-4) |
@@ -22,9 +24,23 @@ Reference ET at the fields averages 2,547 mm/yr against 80 mm/yr of rain (NASA P
 
 NASA GRACE/GRACE-FO (JPL mascon CRI, via NASA GIBS) over 25-28 N, 42-45 E: water storage fell from about +4 cm (2003) to -17.7 cm (mid-2022) against the 2004-2009 average, a trend of -1.2 cm a year, about 22 km³ lost under this 3° × 3° area (`fetch_grace_gibs.py`, `data/grace_qassim.csv`).
 
+![GRACE water storage over Qassim, 2002-2022](images/grace.jpg)
+
 ## All 14 fields (`fields.py`, `data/fields.json`)
 
 Each field's 2024-25 water use is estimated from its own monthly Landsat greenness (cover × ET0, minus effective rain, ÷ 0.8). The 14 fields pumped about 5.5 million m³ in 2024-25 by this FAO-56-style estimate, or about 2.0 million m³ scaled to ECOSTRESS. Field 1 (33.4 ha, green all year) pumped about 949,000 m³; Field 2 (19.6 ha, winter crop only) about 142,000 m³.
+
+## Scaling up: 1,553 pivots in central Qassim (`wide_pivots.py`, `fetch_wide_s2.js`, `data/wide_pivots.csv`)
+
+The same water method on a 73 × 69 km area west of Buraydah (43.35-44.08 E, 26.13-26.75 N, one Sentinel-2 tile). Pivots are found automatically in the highest NDVI of 12 monthly Sentinel-2 images (Dec 2024 to Nov 2025), and each one's water comes from its own monthly Sentinel-2 greenness.
+
+- 1,553 pivots, about 41,600 ha, pumping about 154 to 417 million m³ in a year (ECOSTRESS low to FAO-56 high).
+- The 215 pivots that stay green through summer (14%) pump 30% of the water. Winter-only pivots are the biggest group (535) and use far less per hectare.
+![1,553 pivots in central Qassim, coloured by what they grew in 2024-25](images/wide_pivots_map.jpg)
+
+Colours: red green all year, orange two crops, yellow summer only, light green autumn to early summer, green winter only, blue part of the circle, grey mostly bare.
+
+- Check: on 10 of the 14 fields above, the Sentinel-2 method gives the same pattern as Landsat for 8, and about 15% less water in total, so the area total leans low. Some pivots are missed, and a few circles may not be pivots.
 
 ## How it works
 
@@ -51,15 +67,16 @@ Each field's 2024-25 water use is estimated from its own monthly Landsat greenne
 - `check_ecostress.py`: compares ECOSTRESS daily ET with reference ET and Landsat crop state
 - `fields.py`: classifies all 14 fields from Landsat and estimates their 2024-25 water use
 - `fetch_grace_gibs.py`: GRACE/GRACE-FO water storage for the Qassim area from NASA GIBS
+- `wide_pivots.py`, `fetch_wide_s2.js`: find all pivots in central Qassim and estimate their water
 - `app.py`: Streamlit app; `index.html`: the standalone web demo
-- `data/`: power.csv, ndvi_raw.csv, ndvi_clean.csv (14 fields), elev.txt, ecostress_jet_raw.csv, ecostress_check.csv, grace_qassim.csv, fields.json
+- `data/`: power.csv, ndvi_raw.csv, ndvi_clean.csv (14 fields), elev.txt, ecostress_jet_raw.csv, ecostress_check.csv, grace_qassim.csv, fields.json, wide_pivots.csv (1,553 pivots), s2_ndvi_max_2025.jpg
 
 ## Next steps
 
 1. Ask MEWA for meter readings from a few farm wells (Hafiz platform) to see whether FAO-56 or ECOSTRESS is closer.
 2. Compare our numbers with the KAUST satellite study of 35,000 Saudi pivots.
 3. An Arabic version that works on a phone, tested with 3 to 5 farmers near Unaizah.
-4. Cover every pivot in Qassim, use GRACE-FO up to 2026, and add crop prices.
+4. Grow from 1,553 pivots to all of Qassim, use GRACE-FO up to 2026, and add crop prices.
 
 ## Limits
 
