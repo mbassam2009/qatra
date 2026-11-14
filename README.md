@@ -6,16 +6,20 @@ Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rot
 
 **Live demo:** https://mbassam2009.github.io/qatra/ (or open `index.html` in any browser, no install needed). Click a field on the map.
 
+**Why now:** From 16 November 2026, MEWA stops year-round (perennial) fodder in Qassim and the other sedimentary-shelf regions; licensed seasonal fodder (Egyptian clover, ryegrass) stays allowed. On our map, 93 pivots stay green all year and pump about 65 million m³ a year. Qatra shows each one what to switch to, the water it saves and the crop value.
+
 ![Qatra web demo: Sentinel-2 map of 14 pivots and one field month by month](images/demo_field.jpg)
 
 ## Results for two real pivots in Qassim (about 36 km NW of Unaizah)
 
-| Rotation | Pumped water (m³/ha/yr, 10-season average) | Heat-stress days/yr | Soil score (0-4) |
-|---|---|---|---|
-| A. Year-round fodder (what Landsat shows on Field 1 since 2020) | 30,078 (28,492 to 30,998) | 126 | 3 |
-| B. Wheat, then pearl millet | 18,355 | 120 | 2 |
-| C. Wheat, then summer fallow (what Field 2 did in 2025) | 8,378 | 35 | 1 |
-| D. Faba bean, then summer fallow | 3,605 | 8 | 2 |
+| Rotation | Pumped water (m³/ha/yr, 10-season average) | Heat-stress days/yr | Soil score (0-4) | Crop value (SAR/ha) | SAR per m³ |
+|---|---|---|---|---|---|
+| A. Year-round fodder (Field 1 since 2020; not allowed from 16 Nov 2026) | 30,078 (28,492 to 30,998) | 126 | 3 | 43,940 | 1.46 |
+| B. Berseem clover (winter fodder), then summer fallow | 8,482 | 30 | 2 | 24,530 | 2.89 |
+| C. Wheat, then summer fallow (what Field 2 did in 2025) | 8,378 | 35 | 1 | 10,500 | 1.25 |
+| D. Faba bean, then summer fallow | 3,605 | 8 | 2 | 10,800 | 3.00 |
+
+Crop value = typical yield × price, before costs: wheat 6 t/ha × 1,750 SAR/t (MEWA purchase price, USDA FAS Dec 2025); alfalfa 20.6 t/ha (Saudi average) × 2,133 SAR/t (32 SAR per 15 kg bale retail, USDA FAS; farm-gate is lower); berseem 11.5 t/ha (middle of Estidamah's 8-15 t/ha) at the alfalfa price; faba bean 4 t/ha (KSU trials: 4.9-5.2) × 2,700 SAR/t (2023 import price). Berseem stage lengths are our assumption (Nov to Apr); its Kc is FAO-56 Table 12.
 
 Field 1 is 33.4 ha: switching from A to C would pump about **725,000 m³ less per year** (likely 610,000 to 850,000; see the ground check below).
 Reference ET at the fields averages 2,547 mm/yr against 80 mm/yr of rain (NASA POWER, 2015-2025).
@@ -37,6 +41,10 @@ The same water method on a 73 × 69 km area west of Buraydah (43.35-44.08 E, 26.
 - 1,553 pivots, about 41,600 ha, pumping about 350 to 490 million m³ in a year (central 417 million).
 - The 215 pivots that stay green through summer (14%) pump 30% of the water. Winter-only pivots are the biggest group (535) and use far less per hectare.
 ![1,553 pivots in central Qassim, coloured by what they grew in 2024-25](images/wide_pivots_map.jpg)
+
+Click any pivot in the demo to see its water use and what each allowed option (berseem, wheat, faba bean) would use, save and earn on that field.
+
+Detection check: in a random sample of 80 detected circles, 68 are clearly pivots, 8 are unclear and 4 are not pivots (about 85 to 95% correct). Faint or partly farmed pivots are often missed, so the count is a minimum.
 
 Colours: red green all year, orange two crops, yellow summer only, light green autumn to early summer, green winter only, blue part of the circle, grey mostly bare.
 
@@ -76,17 +84,23 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 1. Ask MEWA for meter readings from a few farm wells (Hafiz platform) to turn our ±15% range into measured numbers.
 2. Compare our numbers with the KAUST satellite study of 35,000 Saudi pivots.
 3. An Arabic version that works on a phone, tested with 3 to 5 farmers near Unaizah.
-4. Grow from 1,553 pivots to all of Qassim, use GRACE-FO up to 2026, and add crop prices.
+4. Grow to all of Qassim, use GRACE-FO up to 2026, and add pumping cost and farm-gate prices.
 
 ## Limits
 
 - Crop water follows FAO-56 coefficients for the closest arid regions, not field measurements in Qassim.
-- Pivot efficiency is assumed at 80%. Heat limits are rough thresholds. Income is not scored.
+- Pivot efficiency is assumed at 80%. Heat limits are rough thresholds. Crop value is yield × price before costs; pumping cost is not included.
 - The crop on Field 1 (alfalfa or Rhodes grass) is inferred from Landsat, not confirmed on the ground.
 - Ground check: An eddy-covariance tower on a 50 ha alfalfa pivot in eastern Saudi Arabia measured about 2,430 mm of water use from June 2013 to May 2014 (Al-Gaadi et al. 2017), and FAO-56 gives about 2,400 mm for year-round fodder at our fields (within about 1%). So FAO-56 is our central estimate. The likely range, about -15% to +17%, covers crop water ±10% and pivot efficiency 75 to 85% (`config.py`). ECOSTRESS reads about a third of this on green pivots; our best explanation is that hot, dry desert air pulls extra water from small irrigated fields and the models behind ECOSTRESS miss it.
 - ECOSTRESS check (`check_ecostress.py`, 438 readings of ECO_L3T_JET.002 daily ET at 8 points, 2019-2025, via AppEEARS): ECOSTRESS follows crop state (median ET/ET0 0.10 on bare, 0.22 partly green, 0.35 green; correlation 0.64 with Landsat NDVI), but on green fields it measures about a third of what FAO-56 assumes (Kc 0.95-1.15). We do not use ECOSTRESS for the amount: see the ground check below. AppEEARS labels ETdaily as W/m², but the values (0-8.5) only make sense as mm/day, so we read them as mm/day. Morning overpasses read lower than afternoon ones, a sign the daily upscaling adds uncertainty.
 
 ## NASA data and references
+
+- MEWA, halt of perennial fodder cultivation from 16 Nov 2026: https://www.mewa.gov.sa/ar/MediaCenter/News/Pages/saudi-stopping-perennial-fodder-cultivation.aspx
+- USDA FAS GAIN, Saudi Arabia Grain and Feed (Dec 2025), wheat yield and price, alfalfa bale price: https://agriexchange.apeda.gov.in/MarketReport/11351060520251227154317183.pdf
+- Estidamah seasonal forage research (Arab News, Jan 2026): https://www.arabnews.pk/node/2630925/saudi-arabia
+- Migdadi et al. 2016, faba bean yields at Dirab, KSU: https://thejaps.org.pk/manuscript/2016-japs-232.pdf
+- UN Comtrade via WITS, Saudi faba bean imports 2023: https://wits.worldbank.org/trade/comtrade/en/country/ALL/year/2023/tradeflow/Imports/partner/WLD/product/071350
 
 - Al-Gaadi, Madugundu & Tola (2017), alfalfa water use measured by eddy covariance on a center pivot in eastern Saudi Arabia: https://parc.ksu.edu.sa/sites/parc.ksu.edu.sa/files/imce_images/temporal_dynamics_of_alfalfa_water_use_efficiency_under_hyper_arid_conditions_of_saudi_arabia_1.pdf
 
