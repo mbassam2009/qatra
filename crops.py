@@ -90,3 +90,9 @@ ECON = {
     "C": {"product": "wheat grain", "t_ha": 6.0, "sar_t": 1750},
     "D": {"product": "faba beans", "t_ha": 4.0, "sar_t": 2700},
 }
+
+# How sure the farmer is of a buyer (1-3, our judgment, shown in the app):
+#  wheat 3: the government buys local wheat at a set price (1,750 SAR/t);
+#  fodder 2: steady local demand from livestock (berseem needs a seasonal-fodder licence);
+#  faba bean 1: no set price, sold against imports.
+MARKET = {"A": 2, "B": 2, "C": 3, "D": 1}

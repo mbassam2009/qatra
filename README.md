@@ -2,7 +2,7 @@
 
 NASA Space Apps Challenge 2026 · Challenge: **Field Shift: Adapting Farms with NASA Data** · Local event: Jazan, Saudi Arabia
 
-Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rotation would pump on their own center-pivot field. It covers 14 real pivots near Unaizah (2 picked by hand, 12 found automatically in a Sentinel-2 image), shows each one from space every month, and opens with NASA GRACE data on how fast the region's underground water is falling. It reads the field's real crop history from Landsat, runs 11 years of NASA POWER weather through the FAO-56 crop water method, and ranks four rotations by the farmer's own priorities (save water, build soil, avoid heat stress). Every option shows its evidence and what a local expert should check.
+Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rotation would pump on their own center-pivot field. It covers 14 real pivots near Unaizah (2 picked by hand, 12 found automatically in a Sentinel-2 image), shows each one from space every month, and opens with NASA GRACE data on how fast the region's underground water is falling. It reads the field's real crop history from Landsat, runs 11 years of NASA POWER weather through the FAO-56 crop water method, and ranks four rotations by the farmer's own priorities (save water, build soil, avoid heat stress, earn more, sure buyer). Every option shows its evidence and what a local expert should check.
 
 **Live demo:** https://mbassam2009.github.io/qatra/ (or open `index.html` in any browser, no install needed). Click a field on the map.
 
@@ -18,6 +18,8 @@ Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rot
 | B. Berseem clover (winter fodder), then summer fallow | 8,482 | 30 | 2 | 24,530 | 2.89 |
 | C. Wheat, then summer fallow (what Field 2 did in 2025) | 8,378 | 35 | 1 | 10,500 | 1.25 |
 | D. Faba bean, then summer fallow | 3,605 | 8 | 2 | 10,800 | 3.00 |
+
+The demo ranks the allowed options with five sliders: save water, build soil, avoid heat stress, earn more per hectare and sure buyer (wheat 3: government set price; fodder 2: local livestock demand; faba bean 1: no set price, competes with imports). Each option can win: faba bean on water and heat, berseem on income, wheat on a sure buyer.
 
 Crop value = typical yield × price, before costs: wheat 6 t/ha × 1,750 SAR/t (MEWA purchase price, USDA FAS Dec 2025); alfalfa 20.6 t/ha (Saudi average) × 2,133 SAR/t (32 SAR per 15 kg bale retail, USDA FAS; farm-gate is lower); berseem 11.5 t/ha (middle of Estidamah's 8-15 t/ha) at the alfalfa price; faba bean 4 t/ha (KSU trials: 4.9-5.2) × 2,700 SAR/t (2023 import price). Berseem stage lengths are our assumption (Nov to Apr); its Kc is FAO-56 Table 12.
 
