@@ -4,7 +4,7 @@ NASA Space Apps Challenge 2026 · Challenge: **Field Shift: Adapting Farms with 
 
 Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rotation would pump on their own center-pivot field. It covers 14 real pivots near Unaizah (2 picked by hand, 12 found automatically in a Sentinel-2 image), shows each one from space every month, and opens with NASA GRACE data on how fast the region's underground water is falling. It reads the field's real crop history from Landsat, runs 11 years of NASA POWER weather through the FAO-56 crop water method, and ranks four rotations by the farmer's own priorities (save water, build soil, avoid heat stress). Every option shows its evidence and what a local expert should check.
 
-**Demo:** open `qatra-demo.html` (or `index.html`) in any browser. No install needed. Click a field on the map.
+**Live demo:** https://mbassam2009.github.io/qatra/ (or open `index.html` in any browser, no install needed). Click a field on the map.
 
 ## Results for two real pivots in Qassim (about 36 km NW of Unaizah)
 
@@ -51,7 +51,7 @@ Each field's 2024-25 water use is estimated from its own monthly Landsat greenne
 - `check_ecostress.py`: compares ECOSTRESS daily ET with reference ET and Landsat crop state
 - `fields.py`: classifies all 14 fields from Landsat and estimates their 2024-25 water use
 - `fetch_grace_gibs.py`: GRACE/GRACE-FO water storage for the Qassim area from NASA GIBS
-- `app.py`: Streamlit app; `qatra-demo.html`: the standalone web demo
+- `app.py`: Streamlit app; `index.html`: the standalone web demo
 - `data/`: power.csv, ndvi_raw.csv, ndvi_clean.csv (14 fields), elev.txt, ecostress_jet_raw.csv, ecostress_check.csv, grace_qassim.csv, fields.json
 
 ## Next steps
