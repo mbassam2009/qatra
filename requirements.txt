@@ -3,3 +3,7 @@ numpy
 requests
 streamlit
 plotly
+pillow
+netCDF4
+opencv-python-headless
+scipy

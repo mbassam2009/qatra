@@ -2,7 +2,7 @@
 
 NASA Space Apps Challenge 2026 · Challenge: **Field Shift: Adapting Farms with NASA Data** · Local event: Jazan, Saudi Arabia
 
-Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rotation would pump on their own center-pivot field. It covers 14 real pivots near Unaizah (2 picked by hand, 12 found automatically in a Sentinel-2 image), shows each one from space every month, and opens with NASA GRACE data on how fast the region's underground water is falling. It reads the field's real crop history from Landsat, runs 11 years of NASA POWER weather through the FAO-56 crop water method, and ranks five options by the farmer's own priorities (save water, build soil, avoid heat stress, earn more, sure buyer). Every option shows its evidence and what a local expert should check.
+Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rotation would pump on their own center-pivot field. It covers 14 real pivots near Unaizah (2 picked by hand, 12 found automatically in a Sentinel-2 image), shows each one from space every month, and opens with NASA GRACE data on how fast the region's underground water is falling. It reads the field's real crop history from Landsat, runs 11 years of NASA POWER weather through the FAO-56 crop water method, and ranks five options by the farmer's own priorities (save water, build soil, avoid heat stress, earn more, sure buyer, least change). Every option shows its evidence and what a local expert should check.
 
 **Live demo:** https://mbassam2009.github.io/qatra/ (or open `index.html` in any browser, no install needed). Click a field on the map.
 
@@ -29,9 +29,11 @@ Reference ET at the fields averages 2,547 mm/yr against 80 mm/yr of rain (NASA P
 
 ## Regional context (GRACE)
 
-NASA GRACE/GRACE-FO (JPL mascon CRI, via NASA GIBS) over 25-28 N, 42-45 E: water storage fell from about +4 cm (2003) to -17.7 cm (mid-2022) against the 2004-2009 average, a trend of -1.2 cm a year, about 22 km³ lost under this 3° × 3° area (`fetch_grace_gibs.py`, `data/grace_qassim.csv`).
+NASA GRACE/GRACE-FO (CSR mascons RL06.3, April 2002 to September 2026) over 25-28 N, 42-45 E: water storage fell from +2.6 cm (2003 average) to -29.4 cm (last 12 months) against the 2004-2009 average. That is 32 cm, or about 32 km³ of water lost under this 3° × 3° area (about 99,600 km²). The loss is speeding up: about 1.3 cm a year in 2002-2017 (GRACE) and about 2.0 cm a year in 2018-2026 (GRACE-FO). Script: `grace_csr.py`, output `data/grace_qassim_csr.csv`.
 
-![GRACE water storage over Qassim, 2002-2022](images/grace.jpg)
+Check: our first version used JPL's mascons through NASA GIBS (`fetch_grace_gibs.py`, `data/grace_qassim.csv`), which stop in July 2022. Over the 213 months both cover, the CSR and JPL series agree closely (correlation 0.96, mean difference 0.3 cm).
+
+![GRACE water storage over Qassim, 2002-2026](images/grace.jpg)
 
 ## All 14 fields (`fields.py`, `data/fields.json`)
 
@@ -77,10 +79,11 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 - `fetch_power.py`, `fetch_landsat_ndvi.py`, `gee_ndvi.js`: data download scripts
 - `check_ecostress.py`: compares ECOSTRESS daily ET with reference ET and Landsat crop state
 - `fields.py`: classifies all 14 fields from Landsat and estimates their 2024-25 water use
-- `fetch_grace_gibs.py`: GRACE/GRACE-FO water storage for the Qassim area from NASA GIBS
+- `grace_csr.py`: GRACE/GRACE-FO water storage for the Qassim area from the CSR mascon file (to September 2026)
+- `fetch_grace_gibs.py`: the same from JPL mascons via NASA GIBS (to July 2022), used as a check
 - `wide_pivots.py`, `fetch_wide_s2.js`: find all pivots in central Qassim and estimate their water
 - `app.py`: Streamlit app; `index.html`: the standalone web demo
-- `data/`: power.csv, ndvi_raw.csv, ndvi_clean.csv (14 fields), elev.txt, ecostress_jet_raw.csv, ecostress_check.csv, grace_qassim.csv, fields.json, wide_pivots.csv (1,553 pivots), s2_ndvi_max_2025.jpg
+- `data/`: power.csv, ndvi_raw.csv, ndvi_clean.csv (14 fields), elev.txt, ecostress_jet_raw.csv, ecostress_check.csv, grace_qassim_csr.csv, grace_qassim.csv, fields.json, wide_pivots.csv (1,553 pivots), s2_ndvi_max_2025.jpg
 
 ## Next steps
 
@@ -88,7 +91,7 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 2. Compare our numbers with the KAUST satellite study of 35,000 Saudi pivots.
 3. An Arabic version that works on a phone, tested with 3 to 5 farmers near Unaizah.
 4. Scale to all of Saudi Arabia: the pivot finder runs tile by tile, starting with the six regions under the fodder rule (Qassim, Riyadh, Hail, Al-Jawf, Tabuk, Eastern Province). Then other farm types: square fields, date palm orchards and greenhouses.
-5. Add pumping cost, farm-gate prices and GRACE-FO data up to 2026.
+5. Add pumping cost and farm-gate prices.
 
 ## Limits
 
@@ -114,7 +117,8 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 - Allen et al. 1998, FAO Irrigation and Drainage Paper 56 (Crop evapotranspiration): https://www.fao.org/4/x0490e/x0490e0b.htm (Chapter 6, Tables 11-12)
 - KAUST, satellite monitoring of groundwater use by center pivots (prior work): https://discovery.kaust.edu.sa/en/article/6446/monitoring-precious-groundwater-resources-for-arid-agricultural-regions/
 - ECOSTRESS ECO_L3T_JET.002 (Hook & Halverson 2024): https://doi.org/10.5067/ECOSTRESS/ECO_L3T_JET.002, accessed through NASA AppEEARS v3.137
-- GRACE/GRACE-FO JPL mascon CRI RL06.3 (PO.DAAC), served by NASA GIBS layer GRACE_Tellus_Liquid_Water_Equivalent_Thickness_Mascon_CRI: https://podaac.jpl.nasa.gov/dataset/TELLUS_GRAC-GRFO_MASCON_CRI_GRID_RL06.3_V4
+- GRACE/GRACE-FO CSR mascons RL06.3 (Save, Bettadpur & Tapley 2016), University of Texas Center for Space Research: https://www2.csr.utexas.edu/grace/ , doi:10.15781/cgq9-nh24
+- GRACE/GRACE-FO JPL mascon CRI RL06.3 (PO.DAAC), served by NASA GIBS layer GRACE_Tellus_Liquid_Water_Equivalent_Thickness_Mascon_CRI, used as a check: https://podaac.jpl.nasa.gov/dataset/TELLUS_GRAC-GRFO_MASCON_CRI_GRID_RL06.3_V4
 - Copernicus Sentinel-2 L2A (ESA), via Microsoft Planetary Computer, for the map, monthly images and pivot detection
 - Saudi green fodder cultivation ban, Nov 2018: https://www.argaam.com/en/article/articledetail/id/568056
 - AI: Claude (Anthropic) was used to help with programming and to check our statistics.

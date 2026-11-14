@@ -44,8 +44,8 @@ with tab_cond:
     c2.plotly_chart(px.bar(m.reset_index(), x="month", y="rain",
                            labels={"rain": "Rain (mm/month)"},
                            title="Average monthly rain"), width='stretch')
-    st.caption("Groundwater: GRACE satellites show the Saq aquifer losing about 2 km3/yr (2002-2016). "
-               "GRACE is regional, so it can't see one field.")
+    st.caption("Groundwater: NASA GRACE shows about 32 km3 of water lost under the Qassim area from 2003 to 2026, "
+               "about 2 km3 a year since 2018 (data/grace_qassim_csr.csv). GRACE is regional, so it can't see one field.")
 
 # ---------- 3. Compare ----------
 with tab_cmp:
