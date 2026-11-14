@@ -32,3 +32,11 @@ START = "20150101"
 END = "20251231"
 
 PIVOT_EFFICIENCY = 0.80  # share of pumped water the crop actually uses (assumption; check)
+
+# How sure we are. A ground measurement on a Saudi alfalfa pivot (eddy covariance, Al-Gaadi et al. 2017:
+# about 24,300 m3/ha of water use, June 2013 to May 2014) matches FAO-56 for year-round fodder (about 24,100 m3/ha),
+# so FAO-56 is our central estimate. The range covers crop water +/-10% and pivot efficiency 75-85%.
+CROP_WATER_UNCERTAINTY = 0.10
+PIVOT_EFFICIENCY_RANGE = (0.75, 0.85)
+RANGE_LOW = (1 - CROP_WATER_UNCERTAINTY) * PIVOT_EFFICIENCY / PIVOT_EFFICIENCY_RANGE[1]    # ~0.85
+RANGE_HIGH = (1 + CROP_WATER_UNCERTAINTY) * PIVOT_EFFICIENCY / PIVOT_EFFICIENCY_RANGE[0]   # ~1.17

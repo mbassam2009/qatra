@@ -4,7 +4,8 @@ Current water use is estimated from the field's own Landsat greenness, month by 
   cover = (NDVI - 0.17) / (0.75 - 0.17), clipped to 0-1   (0.17 = bare sand here, 0.75 = full crop)
   daily crop ET = cover x ET0 (a fully covered crop uses about the reference ET; FAO-56 mid-season Kc ~1)
   pumped water  = sum(max(0, crop ET - effective rain)) / pivot efficiency
-This is our upper estimate (FAO-56 style). The lower estimate multiplies by the ECOSTRESS factor (0.37).
+This is our central estimate (FAO-56 style, which matches a ground measurement on a Saudi alfalfa pivot).
+The range (x0.85 to x1.17) covers crop water +/-10% and pivot efficiency 75-85% (see config.py).
 
 The pattern label (year-round, winter crop, summer crop, not farmed) comes from simple rules on the
 same monthly cover. Output: data/fields.json
@@ -16,9 +17,9 @@ import numpy as np
 import pandas as pd
 
 import model
-from config import PIVOT_EFFICIENCY
+from config import PIVOT_EFFICIENCY, RANGE_LOW, RANGE_HIGH
 
-ECO_FACTOR = 0.37   # median ECOSTRESS ET/ET0 on green fields (0.35) / alfalfa Kc 0.95; see check_ecostress.py
+ECO_FACTOR = 0.37   # what ECOSTRESS would give (ET/ET0 0.35 on green fields); kept only for comparison, see check_ecostress.py
 MONTHS = [10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 FIELDS = [  # id, lat, lon, radius_m  (Field 1-2 picked by hand; 3-14 found by circle detection on Sentinel-2)
@@ -81,8 +82,9 @@ def main():
             "id": fid, "n": i, "lat": lat, "lon": lon, "radius_m": r, "ha": round(ha, 1),
             "pattern": pat, "pattern_en": PATTERNS[pat][0], "pattern_ar": PATTERNS[pat][1],
             "cover": [round(x, 2) for x in cover.values],
-            "now_m3ha": round(m3ha), "now_low_m3ha": round(m3ha * ECO_FACTOR),
-            "now_total": round(m3ha * ha), "now_low_total": round(m3ha * ha * ECO_FACTOR),
+            "now_m3ha": round(m3ha), "now_low_m3ha": round(m3ha * RANGE_LOW), "now_high_m3ha": round(m3ha * RANGE_HIGH),
+            "now_total": round(m3ha * ha), "now_low_total": round(m3ha * ha * RANGE_LOW),
+            "now_high_total": round(m3ha * ha * RANGE_HIGH), "now_ecostress_total": round(m3ha * ha * ECO_FACTOR),
             "monthly_m3ha": [round(x) for x in monthly.values],
             "ndvi": [[d.strftime("%Y-%m-%d"), round(v, 3)] for d, v in zip(hist.date, hist.ndvi_median)],
         })

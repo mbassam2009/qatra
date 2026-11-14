@@ -10,7 +10,7 @@ of the distance transform as circle centres (radius = distance to the edge), kee
 corners are mostly not green (circles, not squares), then remove overlaps.
 
 Water: same as fields.py. Cover = (NDVI - 0.17) / (0.75 - 0.17), daily crop ET = cover x ET0 (NASA POWER),
-minus effective rain, / 0.8 pivot efficiency. Low estimate x 0.37 (ECOSTRESS).
+minus effective rain, / 0.8 pivot efficiency. Likely range x0.85 to x1.17 (config.py).
 Check: on 10 of the 14 hand-checked fields, same pattern as Landsat for 8, about 15% less water in total.
 """
 import json, math, sys
@@ -72,6 +72,7 @@ def water(csv="data/wide_pivots.csv"):
 
 if __name__ == "__main__":
     df = water()
-    print(f"{len(df)} pivots, {df.ha.sum():,.0f} ha, {df.total_check.sum()/1e6:,.0f} M m3/yr (FAO-56), "
-          f"{df.total_check.sum()*0.37/1e6:,.0f} M m3/yr (ECOSTRESS-scaled)")
+    from config import RANGE_LOW, RANGE_HIGH
+    t = df.total_check.sum() / 1e6
+    print(f"{len(df)} pivots, {df.ha.sum():,.0f} ha, {t:,.0f} M m3/yr (likely {t*RANGE_LOW:,.0f} to {t*RANGE_HIGH:,.0f})")
     print(df.groupby("pattern_check").agg(n=("id", "size"), water=("total_check", "sum")))
