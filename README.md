@@ -2,7 +2,7 @@
 
 NASA Space Apps Challenge 2026 · Challenge: **Field Shift: Adapting Farms with NASA Data** · Local event: Jazan, Saudi Arabia
 
-Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rotation would pump on their own center-pivot field. It covers 14 real pivots near Unaizah (2 picked by hand, 12 found automatically in a Sentinel-2 image), shows each one from space every month, and opens with NASA GRACE data on how fast the region's underground water is falling. It reads the field's real crop history from Landsat, runs 11 years of NASA POWER weather through the FAO-56 crop water method, and ranks four rotations by the farmer's own priorities (save water, build soil, avoid heat stress, earn more, sure buyer). Every option shows its evidence and what a local expert should check.
+Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rotation would pump on their own center-pivot field. It covers 14 real pivots near Unaizah (2 picked by hand, 12 found automatically in a Sentinel-2 image), shows each one from space every month, and opens with NASA GRACE data on how fast the region's underground water is falling. It reads the field's real crop history from Landsat, runs 11 years of NASA POWER weather through the FAO-56 crop water method, and ranks five options by the farmer's own priorities (save water, build soil, avoid heat stress, earn more, sure buyer). Every option shows its evidence and what a local expert should check.
 
 **Live demo:** https://mbassam2009.github.io/qatra/ (or open `index.html` in any browser, no install needed). Click a field on the map.
 
@@ -18,12 +18,13 @@ Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rot
 | B. Berseem clover (winter fodder), then summer fallow | 8,482 | 30 | 2 | 24,530 | 2.89 |
 | C. Wheat, then summer fallow (what Field 2 did in 2025) | 8,378 | 35 | 1 | 10,500 | 1.25 |
 | D. Faba bean, then summer fallow | 3,605 | 8 | 2 | 10,800 | 3.00 |
+| E. Wheat and faba bean in turns (one each year) | 5,991 | 21 | 3 | 10,650 | 1.78 |
 
-The demo ranks the allowed options with five sliders: save water, build soil, avoid heat stress, earn more per hectare and sure buyer (wheat 3: government set price; fodder 2: local livestock demand; faba bean 1: no set price, competes with imports). Each option can win: faba bean on water and heat, berseem on income, wheat on a sure buyer.
+The demo ranks the allowed options with six sliders: save water, build soil, avoid heat stress, earn more per hectare, sure buyer and least change (how close an option is to what the field grows now, from its satellite record: fodder fields are closest to berseem, wheat fields to wheat and the wheat/faba rotation). With the default settings, fodder fields get berseem and other fields get wheat and faba bean in turns. Sure buyer scores: wheat 3: government set price; fodder 2: local livestock demand; faba bean 1: no set price, competes with imports. Each option can win: faba bean on water and heat, berseem on income, wheat on a sure buyer.
 
 Crop value = typical yield × price, before costs: wheat 6 t/ha × 1,750 SAR/t (MEWA purchase price, USDA FAS Dec 2025); alfalfa 20.6 t/ha (Saudi average) × 2,133 SAR/t (32 SAR per 15 kg bale retail, USDA FAS; farm-gate is lower); berseem 11.5 t/ha (middle of Estidamah's 8-15 t/ha) at the alfalfa price; faba bean 4 t/ha (KSU trials: 4.9-5.2) × 2,700 SAR/t (2023 import price). Berseem stage lengths are our assumption (Nov to Apr); its Kc is FAO-56 Table 12.
 
-Field 1 is 33.4 ha: switching from A to C would pump about **725,000 m³ less per year** (likely 610,000 to 850,000; see the ground check below).
+Field 1 is 33.4 ha and grows fodder all year, which is not allowed from 16 Nov 2026. Switching to berseem (B), the closest legal option, would pump about **670,000 m³ less per year** (likely 560,000 to 780,000; see the ground check below); faba bean (D) about 830,000 m³ less.
 Reference ET at the fields averages 2,547 mm/yr against 80 mm/yr of rain (NASA POWER, 2015-2025).
 
 ## Regional context (GRACE)
@@ -57,7 +58,7 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 1. **Data in:** NASA POWER daily weather (Tmax, Tmin, RH, wind at 2 m, solar radiation, rain), 2015-2025, at 26.296 N, 43.723 E. Landsat 8/9 Collection 2 Level-2 surface reflectance, 299 scenes, via Microsoft Planetary Computer.
 2. **Prepare:** FAO-56 Penman-Monteith reference ET (`et0.py`, checked against FAO-56 Example 18: 3.88 vs 3.9 mm/day). Field greenness (NDVI) averaged over a ring inside each pivot (skipping the bare pivot point and the edge); cloudy passes removed by blue reflectance.
 3. **Build:** for each day of each crop year, crop ET = Kc × ET0 (FAO-56 Tables 11-12), minus effective rain, divided by 80% pivot efficiency. Heat-stress days = days above each crop's rough heat limit. Simple soil score: legume (+2), soil covered 8+ months (+1), cereal stubble (+1).
-4. **Result:** four rotations ranked by the farmer's sliders, with whole-field totals and the change vs today.
+4. **Result:** five options ranked by the farmer's sliders, starting from what the field grows now, with whole-field totals and the change vs today.
 
 ## Run it
 
@@ -71,7 +72,7 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 
 - `config.py`: the two fields (centre, radius), years, pivot efficiency
 - `et0.py`: FAO-56 Penman-Monteith reference ET
-- `crops.py`: crop coefficients, stage lengths, heat limits and the four rotations, with sources
+- `crops.py`: crop coefficients, stage lengths, heat limits, the five options, prices and the 'least change' scores, with sources
 - `model.py`: water, heat and soil results per rotation
 - `fetch_power.py`, `fetch_landsat_ndvi.py`, `gee_ndvi.js`: data download scripts
 - `check_ecostress.py`: compares ECOSTRESS daily ET with reference ET and Landsat crop state

@@ -123,7 +123,19 @@ def evaluate(weather, key, years):
 def compare(weather):
     first, last = weather.index.year.min(), weather.index.year.max()
     years = range(first, last)  # crop years Oct y - Sep y+1 fully inside the record
-    return [evaluate(weather, k, years) for k in ROTATIONS]
+    res = [evaluate(weather, k, years) for k in ROTATIONS]
+    # E: wheat (C) and faba bean (D) in alternate years = the average of the two, year by year
+    from crops import ROTATION_E
+    c, d = (next(r for r in res if r["key"] == k) for k in ("C", "D"))
+    both = pd.concat([c["per_season"].water_m3_ha, d["per_season"].water_m3_ha], axis=1).mean(axis=1)
+    res.append({
+        "key": "E", "name": ROTATION_E["name"], "short": ROTATION_E["short"], "why": ROTATION_E["why"],
+        "crops": ["wheat", "faba_bean"], "seasons": c["seasons"],
+        "water_m3_ha": (c["water_m3_ha"] + d["water_m3_ha"]) / 2, "water_min": both.min(), "water_max": both.max(),
+        "hot_days": (c["hot_days"] + d["hot_days"]) / 2, "soil_score": ROTATION_E["soil_score"],
+        "per_season": None, "monthly_m3_ha": (c["monthly_m3_ha"] + d["monthly_m3_ha"]) / 2,
+    })
+    return res
 
 
 if __name__ == "__main__":

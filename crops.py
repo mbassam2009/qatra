@@ -73,7 +73,24 @@ ROTATIONS = {
 
 # Perennial (year-round) fodder is banned in Qassim and the other sedimentary-shelf regions from 16 Nov 2026
 # (MEWA announcement). Seasonal fodder allowed under licence: Egyptian clover (berseem), Italian and annual ryegrass.
-ALLOWED_AFTER_NOV_2026 = {"A": False, "B": True, "C": True, "D": True}
+ALLOWED_AFTER_NOV_2026 = {"A": False, "B": True, "C": True, "D": True, "E": True}
+
+# E is a true rotation: wheat one year, faba bean the next (each with a bare summer). Its water, heat days, value and
+# monthly pumping are the average of C and D. Soil score 3: a legume every other year (+2) and wheat stubble (+1).
+ROTATION_E = {"name": "E. Wheat and faba bean in turns (one each year)", "short": "Wheat / faba bean",
+              "why": "Keeps wheat on the field but swaps in a legume every other year: adds nitrogen, breaks wheat "
+                     "disease cycles and cuts water.", "soil_score": 3}
+
+# How close each option is to what the field grows now (1 = same, 0 = very different). Our judgment, used by the
+# "Least change" slider. Current pattern comes from the field's own satellite record (fields.py).
+#  year-round fodder fields: berseem keeps them in fodder (same balers, same buyers);
+#  winter-crop fields (likely wheat): wheat is what they do now; the wheat/faba rotation keeps wheat half the time.
+#  other patterns: unknown crop, so all options score 0.5.
+FAMILIARITY = {
+    "year":   {"A": 1.0, "B": 0.8, "C": 0.2, "D": 0.2, "E": 0.2},
+    "winter": {"A": 0.0, "B": 0.3, "C": 1.0, "D": 0.4, "E": 0.8},
+    "long":   {"A": 0.0, "B": 0.3, "C": 1.0, "D": 0.4, "E": 0.8},
+}
 
 # Crop value per hectare (gross, before costs). Prices in SAR per tonne. Sources:
 #  wheat: 6 t/ha average and 1,750 SAR/t MEWA local purchase price, USDA FAS GAIN Grain and Feed Annual, Dec 2025
@@ -89,10 +106,11 @@ ECON = {
     "B": {"product": "berseem hay", "t_ha": 11.5, "sar_t": 2133},
     "C": {"product": "wheat grain", "t_ha": 6.0, "sar_t": 1750},
     "D": {"product": "faba beans", "t_ha": 4.0, "sar_t": 2700},
+    "E": {"product": "wheat and faba beans in turns", "t_ha": None, "sar_t": None},   # value = average of C and D
 }
 
 # How sure the farmer is of a buyer (1-3, our judgment, shown in the app):
 #  wheat 3: the government buys local wheat at a set price (1,750 SAR/t);
 #  fodder 2: steady local demand from livestock (berseem needs a seasonal-fodder licence);
 #  faba bean 1: no set price, sold against imports.
-MARKET = {"A": 2, "B": 2, "C": 3, "D": 1}
+MARKET = {"A": 2, "B": 2, "C": 3, "D": 1, "E": 2}
