@@ -16,7 +16,7 @@ Qatra shows a farmer in Qassim, Saudi Arabia, how much groundwater each crop rot
 |---|---|---|---|---|---|
 | A. Year-round fodder (Field 1 since 2020; not allowed from 16 Nov 2026) | 30,078 (28,492 to 30,998) | 126 | 3 | 43,940 | 1.46 |
 | B. Berseem clover (winter fodder), then summer fallow | 8,482 | 30 | 2 | 24,530 | 2.89 |
-| C. Wheat, then summer fallow (what Field 2 did in 2025) | 8,378 | 35 | 1 | 10,500 | 1.25 |
+| C. Wheat, then summer fallow (Field 2's pattern in 2025) | 8,378 | 35 | 1 | 10,500 | 1.25 |
 | D. Faba bean, then summer fallow | 3,605 | 8 | 2 | 10,800 | 3.00 |
 | E. Wheat and faba bean in turns (one each year) | 5,991 | 21 | 3 | 10,650 | 1.78 |
 
@@ -45,7 +45,7 @@ The same water method on a 73 × 69 km area west of Buraydah (43.35-44.08 E, 26.
 - The 215 pivots that stay green through summer (14%) pump 30% of the water. Winter-only pivots are the biggest group (535) and use far less per hectare.
 ![1,553 pivots in central Qassim, coloured by what they grew in 2024-25](images/wide_pivots_map.jpg)
 
-Click any pivot in the demo to see its water use and what each allowed option (berseem, wheat, faba bean) would use, save and earn on that field.
+Click any pivot in the demo to see its water use and what each allowed option (berseem, wheat, faba bean, wheat and faba bean in turns) would use, save and earn on that field, with the best match marked.
 
 Detection check: in a random sample of 80 detected circles, 68 are clearly pivots, 8 are unclear and 4 are not pivots (about 85 to 95% correct). Faint or partly farmed pivots are often missed, so the count is a minimum.
 
@@ -96,7 +96,7 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 - Pivot efficiency is assumed at 80%. Heat limits are rough thresholds. Crop value is yield × price before costs; pumping cost is not included.
 - The crop on Field 1 (alfalfa or Rhodes grass) is inferred from Landsat, not confirmed on the ground.
 - Ground check: An eddy-covariance tower on a 50 ha alfalfa pivot in eastern Saudi Arabia measured about 2,430 mm of water use from June 2013 to May 2014 (Al-Gaadi et al. 2017), and FAO-56 gives about 2,400 mm for year-round fodder at our fields (within about 1%). So FAO-56 is our central estimate. The likely range, about -15% to +17%, covers crop water ±10% and pivot efficiency 75 to 85% (`config.py`). ECOSTRESS reads about a third of this on green pivots; our best explanation is that hot, dry desert air pulls extra water from small irrigated fields and the models behind ECOSTRESS miss it.
-- ECOSTRESS check (`check_ecostress.py`, 438 readings of ECO_L3T_JET.002 daily ET at 8 points, 2019-2025, via AppEEARS): ECOSTRESS follows crop state (median ET/ET0 0.10 on bare, 0.22 partly green, 0.35 green; correlation 0.64 with Landsat NDVI), but on green fields it measures about a third of what FAO-56 assumes (Kc 0.95-1.15). We do not use ECOSTRESS for the amount: see the ground check below. AppEEARS labels ETdaily as W/m², but the values (0-8.5) only make sense as mm/day, so we read them as mm/day. Morning overpasses read lower than afternoon ones, a sign the daily upscaling adds uncertainty.
+- ECOSTRESS check (`check_ecostress.py`, 438 readings of ECO_L3T_JET.002 daily ET at 8 points, 2019-2025, via AppEEARS): ECOSTRESS follows crop state (median ET/ET0 0.10 on bare, 0.22 partly green, 0.35 green; correlation 0.64 with Landsat NDVI), but on green fields it measures about a third of what FAO-56 assumes (Kc 0.95-1.15). We do not use ECOSTRESS for the amount: see the ground check above. AppEEARS labels ETdaily as W/m², but the values (0-8.5) only make sense as mm/day, so we read them as mm/day. Morning overpasses read lower than afternoon ones, a sign the daily upscaling adds uncertainty.
 
 ## NASA data and references
 

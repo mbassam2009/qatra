@@ -49,7 +49,7 @@ with tab_cond:
 
 # ---------- 3. Compare ----------
 with tab_cmp:
-    st.subheader("Three rotations for this field")
+    st.subheader("Crop options for this field")
     cols = st.columns(len(results))
     for col, r in zip(cols, results):
         with col:
@@ -59,12 +59,8 @@ with tab_cmp:
             st.metric("Heat stress days", f"{r['hot_days']:.0f}")
             st.metric("Soil score", f"{r['soil_score']}/4")
             st.write(r["why"])
-    if os.path.exists("data/ecostress.csv"):
-        st.subheader("Check: our numbers vs what ECOSTRESS measured")
-        eco = pd.read_csv("data/ecostress.csv", parse_dates=["date"])
-        st.dataframe(eco)  # TODO: join with model crop ET for the current rotation and plot
-    else:
-        st.info("Add data/ecostress.csv (AppEEARS point export) to show the validation chart.")
+    st.caption("Checks: a flux tower on a Saudi alfalfa pivot measured about 2,430 mm a year, close to the FAO-56 "
+               "number for year-round fodder; ECOSTRESS results are in check_ecostress.py and the web demo (index.html).")
 
 # ---------- 4. Priorities ----------
 with tab_pri:
@@ -80,4 +76,5 @@ with tab_pri:
     df = df.sort_values("score", ascending=False)
     st.dataframe(df.rename(columns={"water_m3_ha": "water (m³/ha/yr)", "hot_days": "heat days",
                                     "soil_score": "soil (0-4)"}).round(1), hide_index=True)
-    st.caption("Income is not scored yet: needs local crop prices. Every result needs review by a local agronomist.")
+    st.caption("This is the simple Python version. The web demo (index.html) adds crop value, sure buyer and least change. "
+               "Every result needs review by a local agronomist.")
