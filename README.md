@@ -84,7 +84,8 @@ Colours: red green all year, orange two crops, yellow summer only, light green a
 1. Ask MEWA for meter readings from a few farm wells (Hafiz platform) to turn our ±15% range into measured numbers.
 2. Compare our numbers with the KAUST satellite study of 35,000 Saudi pivots.
 3. An Arabic version that works on a phone, tested with 3 to 5 farmers near Unaizah.
-4. Grow to all of Qassim, use GRACE-FO up to 2026, and add pumping cost and farm-gate prices.
+4. Scale to all of Saudi Arabia: the pivot finder runs tile by tile, starting with the six regions under the fodder rule (Qassim, Riyadh, Hail, Al-Jawf, Tabuk, Eastern Province). Then other farm types: square fields, date palm orchards and greenhouses.
+5. Add pumping cost, farm-gate prices and GRACE-FO data up to 2026.
 
 ## Limits
 
